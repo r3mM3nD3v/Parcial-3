@@ -134,5 +134,6 @@ contraseña: 1234
 3. Este botón iniciará el proceso de generación y ordenamiento de los números utilizando un Web Worker en segundo plano.
 4. Verás mensajes de estado que te indicarán el progreso del proceso. Una vez completado, se mostrarán los primeros 50 números ordenados, junto con información adicional como el número más pequeño y el más grande.
 5. Si deseas detener el proceso en cualquier momento, puedes hacer clic en el botón "Detener Worker".
-6. Puedes ver el proceso con mensajes de consola.
+6. Si deseas puedes modificar la cantidad de números a calcular y a mostrar para probar la funcionalidad del web worker.
+7. Puedes ver el proceso con mensajes de consola.
 
