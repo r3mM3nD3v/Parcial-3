@@ -1,7 +1,8 @@
+// public/js/sortWorker.js
 self.onmessage = function (e) {
     console.log("[Worker] Mensaje recibido del hilo principal.");
     try {
-        const numbers = e.data;
+        const { numbers, order, numToShow } = e.data; // Modificado para recibir un objeto
 
         // Validar que los datos recibidos sean un array
         if (!Array.isArray(numbers)) {
@@ -11,7 +12,12 @@ self.onmessage = function (e) {
         console.log("[Worker] Datos recibidos y validados.");
 
         // Simular un proceso de ordenamiento (usando quicksort para arrays grandes)
-        const sortedNumbers = quickSort([...numbers]);
+        let sortedNumbers = quickSort([...numbers]);
+
+        // Ordenar de mayor a menor si es necesario
+        if (order === "desc") {
+            sortedNumbers = sortedNumbers.reverse();
+        }
 
         console.log("[Worker] Números ordenados.");
 
@@ -20,6 +26,8 @@ self.onmessage = function (e) {
             success: true,
             data: sortedNumbers,
             message: "Números ordenados exitosamente",
+            numToShow: numToShow,
+            order: order,
         });
 
         console.log("[Worker] Resultado enviado al hilo principal.");

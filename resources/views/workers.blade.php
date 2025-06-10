@@ -68,6 +68,26 @@
             max-height: 200px;
             overflow-y: auto;
         }
+
+        .sort-options {
+            margin-bottom: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
     </style>
 </head>
 
@@ -76,7 +96,26 @@
 
     <div class="container">
         <h3>Generador y Ordenador de Números</h3>
-        <button id="generateBtn" class="button">Generar y Ordenar 100,000 números</button>
+
+        <div class="input-group">
+            <label for="numToGenerate">Cantidad de números a generar (máx. 1,000,000):</label>
+            <input type="number" id="numToGenerate" value="100000" min="1" max="1000000">
+        </div>
+
+        <div class="input-group">
+            <label for="numToShow">Cantidad de números a mostrar (máx. 1,000):</label>
+            <input type="number" id="numToShow" value="50" min="1" max="1000">
+        </div>
+
+        <div class="sort-options">
+            <label for="sortOrder">Selecciona el orden:</label>
+            <select id="sortOrder">
+                <option value="asc">Ascendente (Menor a Mayor)</option>
+                <option value="desc">Descendente (Mayor a Menor)</option>
+            </select>
+        </div>
+
+        <button id="generateBtn" class="button">Generar y Ordenar Números</button>
         <button id="stopBtn" class="button" disabled>Detener Worker</button>
 
         <div id="status"></div>

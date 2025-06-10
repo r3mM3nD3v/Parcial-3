@@ -1,3 +1,4 @@
+// public/js/workers-app.js
 class NumberSorterApp {
     constructor() {
         this.worker = null;
@@ -12,6 +13,9 @@ class NumberSorterApp {
         this.stopBtn = document.getElementById("stopBtn");
         this.statusDiv = document.getElementById("status");
         this.resultsDiv = document.getElementById("results");
+        this.sortOrderSelect = document.getElementById("sortOrder");
+        this.numToGenerateInput = document.getElementById("numToGenerate");
+        this.numToShowInput = document.getElementById("numToShow");
         console.log("[App] Elementos del DOM inicializados.");
     }
 
@@ -25,7 +29,7 @@ class NumberSorterApp {
         try {
             const numbers = [];
             for (let i = 0; i < count; i++) {
-                numbers.push(Math.floor(Math.random() * 1000000));
+                numbers.push(Math.floor(Math.random() * (count + 1)));
             }
             console.log("[App] Números aleatorios generados.");
             return numbers;
@@ -51,13 +55,33 @@ class NumberSorterApp {
             this.isProcessing = true;
             this.updateButtons();
 
+            // Obtener los valores de los campos de entrada
+            const numToGenerate = parseInt(this.numToGenerateInput.value, 10);
+            const numToShow = parseInt(this.numToShowInput.value, 10);
+
+            // Validar los valores
+            if (
+                isNaN(numToGenerate) ||
+                numToGenerate < 1 ||
+                numToGenerate > 1000000
+            ) {
+                throw new Error(
+                    "Cantidad de números a generar inválida. Debe estar entre 1 y 1,000,000."
+                );
+            }
+            if (isNaN(numToShow) || numToShow < 1 || numToShow > 1000) {
+                throw new Error(
+                    "Cantidad de números a mostrar inválida. Debe estar entre 1 y 1,000."
+                );
+            }
+
             // Generar números aleatorios
             this.showMessage(
-                "Generando 100,000 números aleatorios...",
+                `Generando ${numToGenerate.toLocaleString()} números aleatorios...`,
                 "loading"
             );
 
-            const numbers = this.generateRandomNumbers(100000);
+            const numbers = this.generateRandomNumbers(numToGenerate);
             this.showMessage(
                 `Números generados. Iniciando ordenamiento...`,
                 "loading"
@@ -66,9 +90,16 @@ class NumberSorterApp {
             // Crear y configurar el Web Worker
             this.createWorker();
 
+            // Obtener el orden seleccionado
+            const sortOrder = this.sortOrderSelect.value;
+
             // Enviar datos al worker
             console.log("[App] Enviando datos al worker.");
-            this.worker.postMessage(numbers);
+            this.worker.postMessage({
+                numbers: numbers,
+                order: sortOrder,
+                numToShow: numToShow,
+            }); // Modificado
         } catch (error) {
             this.handleError(error);
         }
@@ -97,7 +128,7 @@ class NumberSorterApp {
         try {
             if (data.success) {
                 console.log("[App] Mensaje del worker recibido con éxito.");
-                this.displayResults(data.data);
+                this.displayResults(data.data, data.numToShow, data.order);
                 this.showMessage(data.message, "success");
             } else {
                 throw new Error(data.error);
@@ -109,30 +140,38 @@ class NumberSorterApp {
         }
     }
 
-    displayResults(sortedNumbers) {
+    displayResults(sortedNumbers, numToShow, order = "asc") {
         try {
-            // Mostrar solo los primeros 50 números como se requiere
-            const first50 = sortedNumbers.slice(0, 50);
+            // Mostrar solo los primeros N números como se requiere
+            const firstN = sortedNumbers.slice(0, numToShow);
+
+            // Determinar el número más pequeño y el más grande según el orden
+            let min, max;
+            if (order === "asc") {
+                min = sortedNumbers[0];
+                max = sortedNumbers[sortedNumbers.length - 1];
+            } else {
+                max = sortedNumbers[0];
+                min = sortedNumbers[sortedNumbers.length - 1];
+            }
 
             const resultsHTML = `
-                <h4>Resultados del Ordenamiento</h4>
-                <p><strong>Total de números ordenados:</strong> ${sortedNumbers.length.toLocaleString()}</p>
-                <p><strong>Primeros 50 números ordenados:</strong></p>
-                <div class="numbers-display">
-                    ${first50
-                        .map(
-                            (num, index) =>
-                                `<span style="margin-right: 10px;">${
-                                    index + 1
-                                }: ${num.toLocaleString()}</span>`
-                        )
-                        .join("<br>")}
-                </div>
-                <p><strong>Número más pequeño:</strong> ${sortedNumbers[0].toLocaleString()}</p>
-                <p><strong>Número más grande:</strong> ${sortedNumbers[
-                    sortedNumbers.length - 1
-                ].toLocaleString()}</p>
-            `;
+            <h4>Resultados del Ordenamiento</h4>
+            <p><strong>Total de números ordenados:</strong> ${sortedNumbers.length.toLocaleString()}</p>
+            <p><strong>Primeros ${numToShow.toLocaleString()} números ordenados:</strong></p>
+            <div class="numbers-display">
+                ${firstN
+                    .map(
+                        (num, index) =>
+                            `<span style="margin-right: 10px;">${
+                                index + 1
+                            }: ${num.toLocaleString()}</span>`
+                    )
+                    .join("<br>")}
+            </div>
+            <p><strong>Número más pequeño:</strong> ${min.toLocaleString()}</p>
+            <p><strong>Número más grande:</strong> ${max.toLocaleString()}</p>
+        `;
 
             this.resultsDiv.innerHTML = resultsHTML;
             console.log("[App] Resultados mostrados.");
