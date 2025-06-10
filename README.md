@@ -25,8 +25,8 @@ A continuación se detallan los pasos para instalar y ejecutar el proyecto desde
 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/DavidSalomonDev/dtw_parcial2.git
-cd dtw_parcial2
+git clone https://github.com/r3mM3nD3v/Parcial-3.git
+cd Parcial-3
 ```
 
 2. Instalar dependencias de PHP con Composer
@@ -124,4 +124,15 @@ contraseña: 1234
 ## 4. Web Workers
 - Tarea: Implementar un ejemplo que use Web Workers para tareas fuera del hilo principal.
 
+- Archivos:
+  - `public/js/sortWorker.js:` Este es el archivo del Web Worker. Recibe una lista de números, los ordena utilizando el algoritmo <i>Quicksort</i> y devuelve el resultado al hilo principal. Funciona en segundo plano para no bloquear la interfaz de usuario.
+  - `public/js/workers-app.js:` Este es el script principal de la aplicación. Genera los números aleatorios, inicia el Web Worker, recibe los resultados ordenados y los muestra en la vista. También maneja los errores y la interacción del usuario.
+  - `resources/views/workers.blade.php:` Esta es la vista Blade de Laravel. Define la estructura HTML de la página, incluyendo los botones, los mensajes de estado y el área donde se muestran los resultados. Utiliza el script workers-app.js para la lógica de la aplicación.
+- Uso
+1. En la barra de direcciones, escribe la URL de la aplicación Laravel seguida de /workers, deberás ingresar http://localhost:8000/workers o hacer click en la opción de Workers en el sidemenu.
+2. Una vez que ingreses a la página, esta se cargará mostrando un botón para generar y ordenar números.
+3. Este botón iniciará el proceso de generación y ordenamiento de los números utilizando un Web Worker en segundo plano.
+4. Verás mensajes de estado que te indicarán el progreso del proceso. Una vez completado, se mostrarán los primeros 50 números ordenados, junto con información adicional como el número más pequeño y el más grande.
+5. Si deseas detener el proceso en cualquier momento, puedes hacer clic en el botón "Detener Worker".
+6. Puedes ver el proceso con mensajes de consola.
 

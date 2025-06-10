@@ -1,10 +1,10 @@
-// public/js/workers-app.js
 class NumberSorterApp {
     constructor() {
         this.worker = null;
         this.isProcessing = false;
         this.initializeElements();
         this.bindEvents();
+        console.log("[App] Aplicación inicializada.");
     }
 
     initializeElements() {
@@ -12,11 +12,13 @@ class NumberSorterApp {
         this.stopBtn = document.getElementById("stopBtn");
         this.statusDiv = document.getElementById("status");
         this.resultsDiv = document.getElementById("results");
+        console.log("[App] Elementos del DOM inicializados.");
     }
 
     bindEvents() {
         this.generateBtn.addEventListener("click", () => this.startSorting());
         this.stopBtn.addEventListener("click", () => this.stopWorker());
+        console.log("[App] Eventos enlazados.");
     }
 
     generateRandomNumbers(count) {
@@ -25,6 +27,7 @@ class NumberSorterApp {
             for (let i = 0; i < count; i++) {
                 numbers.push(Math.floor(Math.random() * 1000000));
             }
+            console.log("[App] Números aleatorios generados.");
             return numbers;
         } catch (error) {
             throw new Error(
@@ -64,6 +67,7 @@ class NumberSorterApp {
             this.createWorker();
 
             // Enviar datos al worker
+            console.log("[App] Enviando datos al worker.");
             this.worker.postMessage(numbers);
         } catch (error) {
             this.handleError(error);
@@ -73,6 +77,7 @@ class NumberSorterApp {
     createWorker() {
         try {
             this.worker = new Worker("/js/sortWorker.js");
+            console.log("[App] Worker creado.");
 
             this.worker.onmessage = (e) => {
                 this.handleWorkerMessage(e.data);
@@ -91,6 +96,7 @@ class NumberSorterApp {
     handleWorkerMessage(data) {
         try {
             if (data.success) {
+                console.log("[App] Mensaje del worker recibido con éxito.");
                 this.displayResults(data.data);
                 this.showMessage(data.message, "success");
             } else {
@@ -129,6 +135,7 @@ class NumberSorterApp {
             `;
 
             this.resultsDiv.innerHTML = resultsHTML;
+            console.log("[App] Resultados mostrados.");
         } catch (error) {
             throw new Error(`Error mostrando resultados: ${error.message}`);
         }
@@ -154,6 +161,7 @@ class NumberSorterApp {
             this.worker.terminate();
             this.worker = null;
         }
+        console.log("[App] Proceso finalizado.");
     }
 
     updateButtons() {
@@ -167,7 +175,7 @@ class NumberSorterApp {
     }
 
     handleError(error) {
-        console.error("Error:", error);
+        console.error("[App] Error:", error);
         this.showMessage(`Error: ${error.message}`, "error");
         this.finishProcessing();
     }
@@ -178,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
         new NumberSorterApp();
     } catch (error) {
-        console.error("Error inicializando la aplicación:", error);
+        console.error("[App] Error inicializando la aplicación:", error);
         document.getElementById(
             "status"
         ).innerHTML = `<div class="error">Error inicializando la aplicación: ${error.message}</div>`;

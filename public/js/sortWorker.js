@@ -1,5 +1,5 @@
-// public/js/sortWorker.js
 self.onmessage = function (e) {
+    console.log("[Worker] Mensaje recibido del hilo principal.");
     try {
         const numbers = e.data;
 
@@ -8,8 +8,12 @@ self.onmessage = function (e) {
             throw new Error("Los datos recibidos no son un array válido");
         }
 
+        console.log("[Worker] Datos recibidos y validados.");
+
         // Simular un proceso de ordenamiento (usando quicksort para arrays grandes)
         const sortedNumbers = quickSort([...numbers]);
+
+        console.log("[Worker] Números ordenados.");
 
         // Enviar resultado de vuelta al hilo principal
         self.postMessage({
@@ -17,8 +21,11 @@ self.onmessage = function (e) {
             data: sortedNumbers,
             message: "Números ordenados exitosamente",
         });
+
+        console.log("[Worker] Resultado enviado al hilo principal.");
     } catch (error) {
         // Manejo de errores
+        console.error("[Worker] Error:", error.message); // Modificado para mostrar en consola
         self.postMessage({
             success: false,
             error: error.message,
@@ -59,6 +66,7 @@ function quickSort(arr) {
 
 // Manejo de errores globales del worker
 self.onerror = function (error) {
+    console.error("[Worker] Error global:", error.message);
     self.postMessage({
         success: false,
         error: error.message,
