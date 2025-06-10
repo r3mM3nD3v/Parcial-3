@@ -1,0 +1,67 @@
+// public/js/sortWorker.js
+self.onmessage = function (e) {
+    try {
+        const numbers = e.data;
+
+        // Validar que los datos recibidos sean un array
+        if (!Array.isArray(numbers)) {
+            throw new Error("Los datos recibidos no son un array válido");
+        }
+
+        // Simular un proceso de ordenamiento (usando quicksort para arrays grandes)
+        const sortedNumbers = quickSort([...numbers]);
+
+        // Enviar resultado de vuelta al hilo principal
+        self.postMessage({
+            success: true,
+            data: sortedNumbers,
+            message: "Números ordenados exitosamente",
+        });
+    } catch (error) {
+        // Manejo de errores
+        self.postMessage({
+            success: false,
+            error: error.message,
+            message: "Error al procesar los números",
+        });
+    }
+};
+
+// Implementación de QuickSort para mejor rendimiento con arrays grandes
+function quickSort(arr) {
+    try {
+        if (arr.length <= 1) {
+            return arr;
+        }
+
+        const pivot = arr[Math.floor(arr.length / 2)];
+        const left = [];
+        const right = [];
+        const equal = [];
+
+        for (let element of arr) {
+            if (element < pivot) {
+                left.push(element);
+            } else if (element > pivot) {
+                right.push(element);
+            } else {
+                equal.push(element);
+            }
+        }
+
+        return [...quickSort(left), ...equal, ...quickSort(right)];
+    } catch (error) {
+        throw new Error(
+            `Error en el algoritmo de ordenamiento: ${error.message}`
+        );
+    }
+}
+
+// Manejo de errores globales del worker
+self.onerror = function (error) {
+    self.postMessage({
+        success: false,
+        error: error.message,
+        message: "Error crítico en el Web Worker",
+    });
+};
