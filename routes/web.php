@@ -8,7 +8,7 @@ use App\Http\Controllers\Backend\Roles\PermisoController;
 use App\Http\Controllers\Backend\Perfil\PerfilController;
 use App\Http\Controllers\Backend\Configuracion\ConfiguracionController;
 use App\Http\Controllers\Backend\Registro\RegistroController;
-
+use App\Http\Controllers\ApiController;
 
 
 use App\Http\Controllers\Backend\Dashboard\DashboardController;
@@ -58,3 +58,6 @@ Route::get('sin-permisos', [ControlController::class,'indexSinPermiso'])->name('
 Route::get('/admin/dashboard', [DashboardController::class,'vistaDashboard'])->name('admin.dashboard.index');
 
 
+
+Route::get('/apis', [ApiController::class, 'index'])
+     ->name('apis');
