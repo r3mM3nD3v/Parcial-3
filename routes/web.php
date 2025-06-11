@@ -10,7 +10,7 @@ use App\Http\Controllers\Backend\Configuracion\ConfiguracionController;
 use App\Http\Controllers\Backend\Registro\RegistroController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiVideoController;
-
+use App\Http\Controllers\GeolocalizacionController;
 use App\Http\Controllers\Backend\Dashboard\DashboardController;
 
 
@@ -68,3 +68,6 @@ Route::get('/apis', [ApiController::class, 'index']) ->name('apis');
 
 //  --- V I D E O ---
 Route::get('/apiVideo', [ApiVideoController::class, 'index'])->name('apiVideo');
+
+// GEOLOCALIZACION ---
+Route::get('/apiGeolocalizacion', [ApiGeolocalizacionController::class, 'index'])->name('apiGeolocalizacion');

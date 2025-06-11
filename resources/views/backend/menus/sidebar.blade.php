@@ -47,13 +47,12 @@
                                 <i class="fas fa-angle-left right"></i>
                             </p>
                         </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('apis') }}" target="frameprincipal">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>APIs Canva</p>
-                                </a>
-                            </li>
+                                     <li class="nav-item">
+  <a class="nav-link" href="{{ route('apis') }}" target="frameprincipal">
+    <i class="far fa-circle nav-icon"></i>
+    <p>APIs Canvas y Geolocalización</p>
+</a>
+</li>
 
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('apiVideo') }}" target="frameprincipal">
@@ -61,6 +60,8 @@
                                     <p>APIs Video</p>
                                 </a>
                             </li>
+              
+
                         </ul>
                     </li>
 
