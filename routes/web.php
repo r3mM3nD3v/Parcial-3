@@ -9,7 +9,7 @@ use App\Http\Controllers\Backend\Perfil\PerfilController;
 use App\Http\Controllers\Backend\Configuracion\ConfiguracionController;
 use App\Http\Controllers\Backend\Registro\RegistroController;
 use App\Http\Controllers\ApiController;
-
+use App\Http\Controllers\ApiVideoController;
 
 use App\Http\Controllers\Backend\Dashboard\DashboardController;
 
@@ -61,6 +61,10 @@ Route::get('/admin/dashboard', [DashboardController::class, 'vistaDashboard'])->
 Route::get('/workers', function () {
     return view('workers');
 });
+
 // --  APIS ----
-Route::get('/apis', [ApiController::class, 'index'])
-     ->name('apis');
+// --- C A N V A ---
+Route::get('/apis', [ApiController::class, 'index']) ->name('apis');
+
+//  --- V I D E O ---
+Route::get('/apiVideo', [ApiVideoController::class, 'index'])->name('apiVideo');
