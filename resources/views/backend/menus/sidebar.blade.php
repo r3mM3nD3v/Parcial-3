@@ -67,7 +67,14 @@
 
                     </li>
                 @endcan
-
+                <!-- Aquí agregamos Ordenamiento Worker -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/workers') }}" target="frameprincipal">
+                        <i class="fas fa-cogs nav-icon"></i>
+                        <p>Ordenamiento Worker</p>
+                    </a>
+                </li>
+                
             </ul>
         </nav>
 
