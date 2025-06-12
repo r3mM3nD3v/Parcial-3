@@ -108,7 +108,34 @@ contraseña: 1234
 
 ## 1. API de Geolocalización
 - Tarea: Implementar una funcionalidad que obtenga la ubicación actual del usuario.
+- Este proyecto incluye una implementación básica de geolocalización en una aplicación web usando la API de Geolocation del -  
 
+- navegador junto con Leaflet.js para mostrar la ubicación actual del usuario en un mapa.
+- ¿Cómo funciona?
+- a- Detección de soporte de geolocalización
+- if (navigator.geolocation) { ... }
+- Se verifica que el navegador tenga soporte para la API de geolocalización.
+- b- Solicitud de ubicación al navegador
+- navigator.geolocation.getCurrentPosition(success, error);
+- Si el usuario acepta, se ejecuta la función success.
+- Si hay un error o el usuario rechaza, se ejecuta error.
+- c- Obtención y despliegue de coordenadas
+- d- Visualización de la ubicación en un mapa con Leaflet
+- Tecnologías utilizadas
+  - HTML5 / JavaScript
+   - Geolocation API (API del navegador)
+- 🗺️ Leaflet.js (https://leafletjs.com)
+- 🗺️ OpenStreetMap como proveedor de mapas
+- Requisitos
+1. Navegador compatible con navigator.geolocation
+2.  Conexión a Internet (para cargar mapas desde OpenStreetMap)
+- Cómo usar
+1. acceder desde el sidebar lateral a canvas y geolocalizacion 
+2. seleccionar la pestaña de geolocalizacion
+3. Permite que el navegador acceda a tu ubicación.
+- Verás:
+1. Las coordenadas de tu posición actual (latitud y longitud).
+2. Un mapa centrado en tu ubicación, con un marcador.
 
 
 ## 2. API de Canvas
